@@ -15,8 +15,8 @@ class RightBar extends StatelessWidget {
           width: barWidth,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(25),
                 topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
               color: accentHex),
         )

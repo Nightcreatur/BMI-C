@@ -1,4 +1,6 @@
 import 'package:bmi/constants/app_constant.dart';
+import 'package:bmi/widgets/left_bar.dart';
+import 'package:bmi/widgets/right_bar.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -9,6 +11,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  TextEditingController _heightController = TextEditingController();
+  TextEditingController _weightController = TextEditingController();
+  double _result = 0;
+  String _textResult = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +40,7 @@ class _HomeState extends State<Home> {
               Container(
                 width: 130,
                 child: TextField(
+                  controller: _heightController,
                   style: TextStyle(
                       fontSize: 42,
                       fontWeight: FontWeight.w300,
@@ -52,6 +60,7 @@ class _HomeState extends State<Home> {
               Container(
                 width: 130,
                 child: TextField(
+                  controller: _weightController,
                   style: TextStyle(
                       fontSize: 42,
                       fontWeight: FontWeight.w300,
@@ -83,12 +92,48 @@ class _HomeState extends State<Home> {
                 vertical: 10,
               ),
             ),
-            onPressed: () => print('pressed'),
+            onPressed: () {
+              double _h = double.parse(_heightController.text);
+              double _w = double.parse(_weightController.text);
+              setState(() {
+                _result = _w / (_h * _h);
+                if (_result > 25) {
+                  _textResult = "You're over weight";
+                } else if (_result >= 18.5 && _result <= 25) {
+                  _textResult = "You're normal";
+                } else {
+                  _textResult = "You're under weight";
+                }
+              });
+            },
             child: Text(
               'Calculate',
               style: TextStyle(fontSize: 23, color: accentHex),
             ),
-          )
+          ),
+          const SizedBox(height: 25),
+          Container(
+            child: Text(
+              _result.toStringAsFixed(2),
+              style: TextStyle(fontSize: 90, color: accentHex),
+            ),
+          ),
+          Visibility(
+            visible: _textResult.isNotEmpty,
+            child: Text(
+              _textResult,
+              style: TextStyle(
+                  fontSize: 32, fontWeight: FontWeight.w400, color: accentHex),
+            ),
+          ),
+          const SizedBox(height: 25),
+          LeftBar(barWidth: 50),
+          const SizedBox(height: 25),
+          LeftBar(barWidth: 70),
+          const SizedBox(height: 25),
+          RightBar(barWidth: 80),
+          const SizedBox(height: 25),
+          RightBar(barWidth: 60)
         ]),
       ),
     );
